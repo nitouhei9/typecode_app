@@ -1,2 +1,50 @@
-<h1>TypingGames#index</h1>
-<p>Find me in app/views/typing_games/index.html.erb</p>
+<% content_for :title, "TypeCode - プログラミングタイピングゲーム" %>
+
+<div class="container">
+    <div class="header">
+        <h1>⌨️ TypeCode</h1>
+        <p>HTMLとCSSでタイピング練習</p>
+    </div>
+
+    <div class="controls">
+        <div>
+            <label for="language">言語: </label>
+            <select id="language">
+                <option value="html">HTML</option>
+                <option value="css">CSS</option>
+            </select>
+        </div>
+        <button id="startBtn">🚀 スタート</button>
+    </div>
+
+    <div class="game-area">
+        <div class="stats">
+            <div class="stat-item">
+                <h3 id="accuracy">100%</h3>
+                <p>正確率</p>
+            </div>
+            <div class="stat-item">
+                <h3 id="progress">0/10</h3>
+                <p>進行度</p>
+            </div>
+        </div>
+
+        <div class="code-display" id="codeDisplay">
+            <div class="code-line">言語を選択してゲームを開始してください</div>
+        </div>
+
+        <div class="preview-area" id="previewArea">
+            <div class="preview-content" id="previewContent">
+                <div class="css-preview-box">プレビュー</div>
+            </div>
+        </div>
+
+        <input type="text" class="input-area" id="inputArea" placeholder="ここにコードを入力してEnterキーを押す..." disabled>
+    </div>
+
+    <div class="results" id="results">
+        <h2>🎉 完了！</h2>
+        <div class="result-message" id="resultMessage"></div>
+        <button id="restartBtn">🔄 もう一度</button>
+    </div>
+</div>
