@@ -45,7 +45,14 @@ class SimpleTypeCodeGame {
     }
 
     initEventListeners() {
-        document.getElementById('startBtn').addEventListener('click', () => this.startGame());
+        // スペースキーでスタート
+        document.addEventListener('keydown', (e) => {
+            if (e.code === 'Space' && !this.isPlaying) {
+                e.preventDefault();
+                this.startGame();
+            }
+        });
+        
         document.getElementById('restartBtn').addEventListener('click', () => this.resetGame());
         document.getElementById('inputArea').addEventListener('keydown', (e) => this.handleKeyDown(e));
         document.getElementById('inputArea').addEventListener('input', () => this.updateDisplay());
@@ -56,7 +63,6 @@ class SimpleTypeCodeGame {
         this.loadCode();
         this.isPlaying = true;
         
-        document.getElementById('startBtn').disabled = true;
         document.getElementById('inputArea').disabled = false;
         document.getElementById('inputArea').focus();
         document.getElementById('results').style.display = 'none';
@@ -69,11 +75,10 @@ class SimpleTypeCodeGame {
         this.isPlaying = false;
         this.resetStats();
         
-        document.getElementById('startBtn').disabled = false;
         document.getElementById('inputArea').disabled = true;
         document.getElementById('inputArea').value = '';
         document.getElementById('results').style.display = 'none';
-        document.getElementById('codeDisplay').innerHTML = '<div class="code-line">言語を選択してゲームを開始してください</div>';
+        document.getElementById('codeDisplay').innerHTML = '<div class="code-line">スペースキーでスタート</div>';
         
         this.updateStats();
     }
@@ -158,14 +163,16 @@ class SimpleTypeCodeGame {
         let formattedLine = '';
         for (let i = 0; i < currentLine.length; i++) {
             const char = currentLine[i];
+            const displayChar = char === ' ' ? '&nbsp;' : this.escapeHtml(char);
+            
             if (i < input.length) {
                 if (char === input[i]) {
-                    formattedLine += `<span class="typed-char">${this.escapeHtml(char)}</span>`;
+                    formattedLine += `<span class="typed-char">${displayChar}</span>`;
                 } else {
-                    formattedLine += `<span class="error-char">${this.escapeHtml(char)}</span>`;
+                    formattedLine += `<span class="error-char">${displayChar}</span>`;
                 }
             } else {
-                formattedLine += this.escapeHtml(char);
+                formattedLine += `<span>${displayChar}</span>`;
             }
         }
         
@@ -233,23 +240,19 @@ class SimpleTypeCodeGame {
     }
 
     updateStats() {
-        const totalAttempts = this.correctLines + this.errors;
-        const accuracy = totalAttempts === 0 ? 100 : Math.round((this.correctLines / totalAttempts) * 100);
-        
-        document.getElementById('accuracy').textContent = `${accuracy}%`;
         document.getElementById('progress').textContent = `${this.correctLines}/${this.totalLines}`;
     }
 
     endGame() {
         this.isPlaying = false;
         document.getElementById('inputArea').disabled = true;
-        document.getElementById('startBtn').disabled = false;
         
         this.showResults();
     }
 
     showResults() {
-        const accuracy = Math.round((this.correctLines / (this.correctLines + this.errors)) * 100);
+        const totalAttempts = this.correctLines + this.errors;
+        const accuracy = totalAttempts === 0 ? 100 : Math.round((this.correctLines / totalAttempts) * 100);
         let message = '';
         
         if (accuracy === 100) {
@@ -270,9 +273,5 @@ class SimpleTypeCodeGame {
 
 // ページ読み込み後にゲーム初期化
 document.addEventListener('DOMContentLoaded', () => {
-    new SimpleTypeCodeGame();
-});
-
-document.addEventListener('turbo:load', () => {
     new SimpleTypeCodeGame();
 });

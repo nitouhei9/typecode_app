@@ -6,6 +6,226 @@
         <p>HTMLとCSSでタイピング練習</p>
     </div>
 
+    <div class="game-area">
+        <div class="stats">
+            <div class="stat-item">
+                <select id="language">
+                    <option value="html">HTML</option>
+                    <option value="css">CSS</option>
+                </select>
+                <p>言語</p>
+            </div>
+            <div class="stat-item">
+                <h3 id="progress">0/10</h3>
+                <p>進行度</p>
+            </div>
+        </div>
+
+        <div class="code-display" id="codeDisplay">
+            <div class="code-line">スペースキーでスタート</div>
+        </div>
+
+        <div class="preview-area" id="previewArea">
+            <div class="preview-content" id="previewContent">
+                <div class="css-preview-box">プレビュー</div>
+            </div>
+        </div>
+
+        <input type="text" class="input-area" id="inputArea" placeholder="ここにコードを入力してEnterキーを押す..." disabled>
+    </div>
+
+    <div class="results" id="results">
+        <h2>🎉 完了！</h2>
+        <div class="result-message" id="resultMessage"></div>
+        <button id="restartBtn">🔄 もう一度</button>
+    </div>
+</div><% content_for :title, "TypeCode - プログラミングタイピングゲーム" %>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Courier New', monospace;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    color: #333;
+    padding: 20px;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 30px;
+    color: white;
+}
+
+.header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+.controls {
+    background: rgba(255,255,255,0.9);
+    padding: 20px;
+    border-radius: 15px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+select, button {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+select {
+    background: #f8f9fa;
+    border: 2px solid #dee2e6;
+    min-width: 150px;
+}
+
+button {
+    background: linear-gradient(45deg, #667eea, #764ba2);
+    color: white;
+    font-weight: bold;
+    min-width: 120px;
+}
+
+button:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+button:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.game-area {
+    background: rgba(255,255,255,0.95);
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+}
+
+.stats {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+}
+
+.stat-item {
+    text-align: center;
+    background: linear-gradient(45deg, #667eea, #764ba2);
+    color: white;
+    padding: 15px 25px;
+    border-radius: 10px;
+    min-width: 100px;
+}
+
+.stat-item h3 {
+    font-size: 1.8rem;
+    margin-bottom: 5px;
+}
+
+.code-display {
+    background: #282c34;
+    color: #abb2bf;
+    padding: 40px;
+    border-radius: 10px;
+    font-size: 1.5rem;
+    line-height: 2;
+    margin: 20px 0;
+    min-height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.code-line {
+    padding: 10px;
+    border-radius: 5px;
+    font-weight: 500;
+}
+
+.current-line {
+    background: rgba(97, 218, 251, 0.1);
+    border-left: 4px solid #61dafb;
+}
+
+.completed-line {
+    opacity: 0.6;
+    background: rgba(76, 175, 80, 0.1);
+}
+
+.typed-char {
+    background-color: #4caf50;
+    color: white;
+    padding: 1px 2px;
+    border-radius: 2px;
+}
+
+.error-char {
+    background-color: #f44336;
+    color: white;
+    padding: 1px 2px;
+    border-radius: 2px;
+}
+
+.preview-area {
+    background: rgba(255,255,255,0.95);
+    border: 2px solid #667eea;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 20px 0;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.preview-content {
+    min-height: 80px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background: #f8f9fa;
+    font-family: Arial, sans-serif;
+}
+
+.preview-content h1 { font-size: 2rem; margin: 10px 0; color: #333; }
+.preview-content p { margin: 10px 0; line-height: 1.6; }
+.preview-content div { padding: 5px; }
+.preview-content img { max-width: 100px; height: auto; border: 1px solid #ccc; }
+.preview-content a { color: #667eea; text-decoration: underline; }
+.preview-content ul, .preview-content ol { margin: 10px 0; padding-left: 20px; }
+.preview-content li { margin: 5px 0; }
+.preview-content input { padding: 8px; border: 1px solid #ccc; border-radius: 4px; margin: 5px 0<% content_for :title, "TypeCode - プログラミングタイピングゲーム" %>
+
+<div class="container">
+    <div class="header">
+        <h1>⌨️ TypeCode</h1>
+        <p>HTMLとCSSでタイピング練習</p>
+    </div>
+
     <div class="controls">
         <div>
             <label for="language">言語: </label>

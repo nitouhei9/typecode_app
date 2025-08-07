@@ -29,52 +29,6 @@ body {
     text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
 }
 
-.controls {
-    background: rgba(255,255,255,0.9);
-    padding: 20px;
-    border-radius: 15px;
-    margin-bottom: 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 15px;
-}
-
-select, button {
-    padding: 12px 20px;
-    border: none;
-    border-radius: 8px;
-    font-size: 1rem;
-    font-family: inherit;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-select {
-    background: #f8f9fa;
-    border: 2px solid #dee2e6;
-    min-width: 150px;
-}
-
-button {
-    background: linear-gradient(45deg, #667eea, #764ba2);
-    color: white;
-    font-weight: bold;
-    min-width: 120px;
-}
-
-button:hover:not(:disabled) {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-}
-
-button:disabled {
-    background: #ccc;
-    cursor: not-allowed;
-    transform: none;
-}
-
 .game-area {
     background: rgba(255,255,255,0.95);
     border-radius: 15px;
@@ -104,6 +58,17 @@ button:disabled {
     margin-bottom: 5px;
 }
 
+.stat-item select {
+    background: rgba(255,255,255,0.9);
+    color: #333;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 12px;
+    font-size: 1rem;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
 .code-display {
     background: #282c34;
     color: #abb2bf;
@@ -117,35 +82,43 @@ button:disabled {
     align-items: center;
     justify-content: center;
     text-align: center;
+    font-family: 'Courier New', monospace;
 }
 
 .code-line {
     padding: 10px;
     border-radius: 5px;
     font-weight: 500;
+    font-family: 'Courier New', monospace;
+    white-space: pre;
+    display: flex;
+    flex-wrap: wrap;
 }
 
-.current-line {
-    background: rgba(97, 218, 251, 0.1);
-    border-left: 4px solid #61dafb;
-}
-
-.completed-line {
-    opacity: 0.6;
-    background: rgba(76, 175, 80, 0.1);
+.code-line span,
+.typed-char,
+.error-char {
+    display: inline-block;
+    width: 0.6em;
+    text-align: center;
+    flex-shrink: 0;
+    margin: 0;
+    padding: 0;
+    border: none;
+    outline: none;
+    box-sizing: border-box;
+    vertical-align: baseline;
 }
 
 .typed-char {
     background-color: #4caf50;
     color: white;
-    padding: 1px 2px;
     border-radius: 2px;
 }
 
 .error-char {
     background-color: #f44336;
     color: white;
-    padding: 1px 2px;
     border-radius: 2px;
 }
 
@@ -167,7 +140,15 @@ button:disabled {
     font-family: Arial, sans-serif;
 }
 
-/* HTMLプレビューのスタイル */
+.current-line {
+    background: rgba(97, 218, 251, 0.1);
+    border-left: 4px solid #61dafb;
+}
+
+.completed-line {
+    opacity: 0.6;
+    background: rgba(76, 175, 80, 0.1);
+}
 .preview-content h1 {
     font-size: 2rem;
     margin: 10px 0;
@@ -212,12 +193,28 @@ button:disabled {
 }
 
 .preview-content button {
-    padding: 8px 15px;
-    background: #667eea;
-    color: white;
+    padding: 12px 20px;
     border: none;
-    border-radius: 4px;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: inherit;
     cursor: pointer;
+    transition: all 0.3s ease;
+    background: linear-gradient(45deg, #667eea, #764ba2);
+    color: white;
+    font-weight: bold;
+    min-width: 120px;
+}
+
+button:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+button:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+    transform: none;
 }
 
 /* CSSプレビューのスタイル */
@@ -269,6 +266,8 @@ button:disabled {
     font-size: 1.2rem;
     margin-bottom: 20px;
     color: #555;
+    white-space: pre-line;
+    line-height: 1.6;
 }
 
 /* レスポンシブデザイン */
