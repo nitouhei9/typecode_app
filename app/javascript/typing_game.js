@@ -13,16 +13,16 @@ const codeDatabase = {
         "<meta name='viewport' content='width=device-width'>"
     ],
     css: [
-        "color: #333333;",
-        "background-color: #ffffff;",
-        "font-size: 18px;",
+        "color: red;",
+        "background-color: red;",
+        "font-size: 30px;",
         "margin: 20px auto;",
-        "padding: 15px 30px;",
-        "border: 2px solid #ddd;",
-        "border-radius: 8px;",
+        "padding: 70px 80px;",
+        "border: 5px solid red;",
+        "border-radius: 30px;",
         "display: flex;",
-        "justify-content: center;",
-        "box-shadow: 0 2px 4px rgba(0,0,0,0.1);"
+        "justify-content: space-between;",
+        "box-shadow: 0 2px 20px rgba(0,0,0.1);"
     ]
 };
 
@@ -137,7 +137,7 @@ class SimpleTypeCodeGame {
             // HTMLの場合は初期メッセージ
             document.getElementById('previewContent').innerHTML = `
                 <div style="color: #999; text-align: center; padding: 30px;">
-                    HTMLコードを入力するとここにプレビューが表示されます
+                    ここにプレビューが表示されます
                 </div>
             `;
         }
@@ -192,7 +192,7 @@ class SimpleTypeCodeGame {
             if (input.trim() === '') {
                 previewContent.innerHTML = `
                     <div style="color: #999; text-align: center; padding: 30px;">
-                        HTMLコードを入力するとここにプレビューが表示されます
+                       ここにプレビューが表示されます
                     </div>
                 `;
                 return;
@@ -201,19 +201,7 @@ class SimpleTypeCodeGame {
         }
     }
 
-    updateHtmlPreview(input, previewContent) {
-        try {
-            // 安全なHTMLのみを表示
-            const safeHtml = input
-                .replace(/<script[^>]*>.*?<\/script>/gi, '')  // scriptタグを除去
-                .replace(/on\w+="[^"]*"/gi, '')  // イベントハンドラを除去
-                .replace(/javascript:/gi, '');  // javascript:を除去
-            
-            previewContent.innerHTML = safeHtml;
-        } catch (e) {
-            previewContent.textContent = 'プレビューできません';
-        }
-    }
+
 
     updateCssPreview(input, previewContent) {
         try {
@@ -250,25 +238,6 @@ class SimpleTypeCodeGame {
         this.showResults();
     }
 
-    showResults() {
-        const totalAttempts = this.correctLines + this.errors;
-        const accuracy = totalAttempts === 0 ? 100 : Math.round((this.correctLines / totalAttempts) * 100);
-        let message = '';
-        
-        if (accuracy === 100) {
-            message = '🌟 パーフェクト！素晴らしい正確性です！';
-        } else if (accuracy >= 90) {
-            message = '🎯 とても良い成績です！';
-        } else if (accuracy >= 80) {
-            message = '👍 良い結果です！';
-        } else {
-            message = '💪 練習を続けて上達しましょう！';
-        }
-        
-        document.getElementById('resultMessage').textContent = message;
-        document.getElementById('results').style.display = 'block';
-        document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
-    }
 }
 
 // ページ読み込み後にゲーム初期化

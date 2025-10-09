@@ -51,5 +51,7 @@ test:
 production:
   <<: *default
   database: typecode_app_production
-  username: typecode_app
-  password: <%= ENV["TYPECODE_APP_DATABASE_PASSWORD"] %>
+  username: root
+  password: mouhann9
+  host: localhost
+  socket: /var/lib/mysql/mysql.sock

@@ -2,8 +2,7 @@
 
 <div class="container">
     <div class="header">
-        <h1>⌨️ TypeCode</h1>
-        <p>HTMLとCSSでタイピング練習</p>
+        <h1>Type Code</h1>
     </div>
 
     <div class="game-area">
@@ -13,11 +12,11 @@
                     <option value="html">HTML</option>
                     <option value="css">CSS</option>
                 </select>
-                <p>言語</p>
+                <p>言語を選択</p>
             </div>
             <div class="stat-item">
                 <h3 id="progress">0/10</h3>
-                <p>進行度</p>
+                <p>回答数</p>
             </div>
         </div>
 
@@ -31,11 +30,11 @@
             </div>
         </div>
 
-        <input type="text" class="input-area" id="inputArea" placeholder="ここにコードを入力してEnterキーを押す..." disabled>
+        <input type="text" class="input-area" id="inputArea" placeholder="ここにコードを入力" disabled>
     </div>
 
     <div class="results" id="results">
-        <h2>🎉 完了！</h2>
+        <h2> 完了！</h2>
         <div class="result-message" id="resultMessage"></div>
         <button id="restartBtn">🔄 もう一度</button>
     </div>
@@ -50,7 +49,7 @@
 
 body {
     font-family: 'Courier New', monospace;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background:  #1E3A8A ;
     min-height: 100vh;
     color: #333;
     padding: 20px;
@@ -76,7 +75,6 @@ body {
 .controls {
     background: rgba(255,255,255,0.9);
     padding: 20px;
-    border-radius: 15px;
     margin-bottom: 20px;
     display: flex;
     justify-content: space-between;
@@ -88,7 +86,6 @@ body {
 select, button {
     padding: 12px 20px;
     border: none;
-    border-radius: 8px;
     font-size: 1rem;
     font-family: inherit;
     cursor: pointer;
@@ -102,7 +99,7 @@ select {
 }
 
 button {
-    background: linear-gradient(45deg, #667eea, #764ba2);
+    background:#667eea;
     color: white;
     font-weight: bold;
     min-width: 120px;
@@ -121,7 +118,6 @@ button:disabled {
 
 .game-area {
     background: rgba(255,255,255,0.95);
-    border-radius: 15px;
     padding: 30px;
     box-shadow: 0 8px 32px rgba(0,0,0,0.2);
 }
@@ -136,10 +132,9 @@ button:disabled {
 
 .stat-item {
     text-align: center;
-    background: linear-gradient(45deg, #667eea, #764ba2);
+    background: #1E3A8A;
     color: white;
     padding: 15px 25px;
-    border-radius: 10px;
     min-width: 100px;
 }
 
@@ -150,9 +145,8 @@ button:disabled {
 
 .code-display {
     background: #282c34;
-    color: #abb2bf;
+    color: #ffffffff;
     padding: 40px;
-    border-radius: 10px;
     font-size: 1.5rem;
     line-height: 2;
     margin: 20px 0;
@@ -165,13 +159,11 @@ button:disabled {
 
 .code-line {
     padding: 10px;
-    border-radius: 5px;
     font-weight: 500;
 }
 
 .current-line {
     background: rgba(97, 218, 251, 0.1);
-    border-left: 4px solid #61dafb;
 }
 
 .completed-line {
@@ -183,30 +175,24 @@ button:disabled {
     background-color: #4caf50;
     color: white;
     padding: 1px 2px;
-    border-radius: 2px;
 }
 
 .error-char {
     background-color: #f44336;
     color: white;
     padding: 1px 2px;
-    border-radius: 2px;
 }
 
 .preview-area {
     background: rgba(255,255,255,0.95);
-    border: 2px solid #667eea;
-    border-radius: 10px;
     padding: 20px;
     margin: 20px 0;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
 .preview-content {
     min-height: 80px;
     padding: 15px;
     border: 1px solid #ddd;
-    border-radius: 5px;
     background: #f8f9fa;
     font-family: Arial, sans-serif;
 }
@@ -234,24 +220,16 @@ button:disabled {
                 <option value="css">CSS</option>
             </select>
         </div>
-        <button id="startBtn">🚀 スタート</button>
     </div>
 
     <div class="game-area">
         <div class="stats">
-            <div class="stat-item">
-                <h3 id="accuracy">100%</h3>
-                <p>正確率</p>
-            </div>
             <div class="stat-item">
                 <h3 id="progress">0/10</h3>
                 <p>進行度</p>
             </div>
         </div>
 
-        <div class="code-display" id="codeDisplay">
-            <div class="code-line">言語を選択してゲームを開始してください</div>
-        </div>
 
         <div class="preview-area" id="previewArea">
             <div class="preview-content" id="previewContent">
@@ -263,8 +241,8 @@ button:disabled {
     </div>
 
     <div class="results" id="results">
-        <h2>🎉 完了！</h2>
+        <h2> 完了</h2>
         <div class="result-message" id="resultMessage"></div>
-        <button id="restartBtn">🔄 もう一度</button>
+        <button id="restartBtn"> もう一度</button>
     </div>
 </div>
