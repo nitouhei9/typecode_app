@@ -1,31 +1,3 @@
-// コードサンプルデータベース
-const codeDatabase = {
-    html: [
-        "<h1>Welcome to our website</h1>",
-        "<p>This is a simple paragraph.</p>",
-        "<div class='container'>",
-        "<img src='photo.jpg' alt='A beautiful photo'>",
-        "<a href='https://example.com'>Visit our site</a>",
-        "<ul><li>First item</li><li>Second item</li></ul>",
-        "<input type='text' name='username' placeholder='Enter name'>",
-        "<button type='submit'>Send Message</button>",
-        "<form method='post' action='/submit'>",
-        "<meta name='viewport' content='width=device-width'>"
-    ],
-    css: [
-        "color: red;",
-        "background-color: red;",
-        "font-size: 30px;",
-        "margin: 20px auto;",
-        "padding: 70px 80px;",
-        "border: 5px solid red;",
-        "border-radius: 30px;",
-        "display: flex;",
-        "justify-content: space-between;",
-        "box-shadow: 0 2px 20px rgba(0,0,0.1);"
-    ]
-};
-
 class SimpleTypeCodeGame {
     constructor() {
         this.currentCode = [];
@@ -34,8 +6,59 @@ class SimpleTypeCodeGame {
         this.correctLines = 0;
         this.errors = 0;
         this.isPlaying = false;
+        this.codeDatabase = { html: [], css: [] };
         
-        this.initEventListeners();
+        this.loadProblems();
+    }
+
+    async loadProblems() {
+        try {
+            // HTMLの問題を読み込み
+            const htmlResponse = await fetch('/html_problems.json');
+            const htmlData = await htmlResponse.json();
+            this.codeDatabase.html = htmlData.html;
+
+            // CSSの問題を読み込み
+            const cssResponse = await fetch('/css_problems.json');
+            const cssData = await cssResponse.json();
+            this.codeDatabase.css = cssData.css;
+
+            console.log('問題データを読み込みました');
+            console.log('HTML問題数:', this.codeDatabase.html.length);
+            console.log('CSS問題数:', this.codeDatabase.css.length);
+            
+            this.initEventListeners();
+        } catch (error) {
+            console.error('問題データの読み込みに失敗しました:', error);
+            // フォールバック用のデータ
+            this.codeDatabase = {
+                html: [
+                    "<h1>Welcome to our website</h1>",
+                    "<p>This is a simple paragraph.</p>",
+                    "<div class='container'>",
+                    "<img src='photo.jpg' alt='A beautiful photo'>",
+                    "<a href='https://example.com'>Visit our site</a>",
+                    "<ul><li>First item</li><li>Second item</li></ul>",
+                    "<input type='text' name='username' placeholder='Enter name'>",
+                    "<button type='submit'>Send Message</button>",
+                    "<form method='post' action='/submit'>",
+                    "<meta name='viewport' content='width=device-width'>"
+                ],
+                css: [
+                    "color: red;",
+                    "background-color: red;",
+                    "font-size: 30px;",
+                    "margin: 20px auto;",
+                    "padding: 70px 80px;",
+                    "border: 5px solid red;",
+                    "border-radius: 30px;",
+                    "display: flex;",
+                    "justify-content: space-between;",
+                    "box-shadow: 0 2px 20px rgba(0,0,0.1);"
+                ]
+            };
+            this.initEventListeners();
+        }
     }
 
     escapeHtml(text) {
@@ -53,9 +76,16 @@ class SimpleTypeCodeGame {
             }
         });
         
-        document.getElementById('restartBtn').addEventListener('click', () => this.resetGame());
-        document.getElementById('inputArea').addEventListener('keydown', (e) => this.handleKeyDown(e));
-        document.getElementById('inputArea').addEventListener('input', () => this.updateDisplay());
+        const restartBtn = document.getElementById('restartBtn');
+        if (restartBtn) {
+            restartBtn.addEventListener('click', () => this.resetGame());
+        }
+        
+        const inputArea = document.getElementById('inputArea');
+        if (inputArea) {
+            inputArea.addEventListener('keydown', (e) => this.handleKeyDown(e));
+            inputArea.addEventListener('input', () => this.updateDisplay());
+        }
     }
 
     startGame() {
@@ -63,8 +93,9 @@ class SimpleTypeCodeGame {
         this.loadCode();
         this.isPlaying = true;
         
-        document.getElementById('inputArea').disabled = false;
-        document.getElementById('inputArea').focus();
+        const inputArea = document.getElementById('inputArea');
+        inputArea.disabled = false;
+        inputArea.focus();
         document.getElementById('results').style.display = 'none';
         
         this.updateDisplay();
@@ -75,8 +106,9 @@ class SimpleTypeCodeGame {
         this.isPlaying = false;
         this.resetStats();
         
-        document.getElementById('inputArea').disabled = true;
-        document.getElementById('inputArea').value = '';
+        const inputArea = document.getElementById('inputArea');
+        inputArea.disabled = true;
+        inputArea.value = '';
         document.getElementById('results').style.display = 'none';
         document.getElementById('codeDisplay').innerHTML = '<div class="code-line">スペースキーでスタート</div>';
         
@@ -92,12 +124,17 @@ class SimpleTypeCodeGame {
 
     loadCode() {
         const language = document.getElementById('language').value;
-        const allCodes = codeDatabase[language];
+        const allCodes = this.codeDatabase[language];
+        
+        if (!allCodes || allCodes.length === 0) {
+            console.error('問題データがありません');
+            return;
+        }
         
         // 10行をランダムに選択
         this.currentCode = [];
         const shuffled = [...allCodes].sort(() => 0.5 - Math.random());
-        this.currentCode = shuffled.slice(0, this.totalLines);
+        this.currentCode = shuffled.slice(0, Math.min(this.totalLines, shuffled.length));
     }
 
     handleKeyDown(e) {
@@ -131,10 +168,8 @@ class SimpleTypeCodeGame {
         // プレビューを初期状態に戻す
         const language = document.getElementById('language').value;
         if (language === 'css') {
-            // CSSの場合は常にプレビューボックスを表示
             this.updateCssPreview('', document.getElementById('previewContent'));
         } else {
-            // HTMLの場合は初期メッセージ
             document.getElementById('previewContent').innerHTML = `
                 <div style="color: #999; text-align: center; padding: 30px;">
                     ここにプレビューが表示されます
@@ -145,7 +180,6 @@ class SimpleTypeCodeGame {
         if (this.currentLineIndex >= this.totalLines) {
             this.endGame();
         } else {
-            // 次の問題を表示
             this.updateDisplay();
         }
     }
@@ -201,11 +235,24 @@ class SimpleTypeCodeGame {
         }
     }
 
-
+    updateHtmlPreview(input, previewContent) {
+        try {
+            // 安全なHTMLのみ表示
+            const safeInput = input
+                .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+                .replace(/on\w+\s*=\s*["'][^"']*["']/gi, '');
+            previewContent.innerHTML = safeInput;
+        } catch (e) {
+            previewContent.innerHTML = `
+                <div style="color: #e53e3e; text-align: center; padding: 20px;">
+                    プレビューエラー
+                </div>
+            `;
+        }
+    }
 
     updateCssPreview(input, previewContent) {
         try {
-            // CSSプロパティを適用したボックスを表示
             const cssBox = document.createElement('div');
             cssBox.className = 'css-preview-box';
             cssBox.textContent = 'プレビュー';
@@ -238,6 +285,20 @@ class SimpleTypeCodeGame {
         this.showResults();
     }
 
+    showResults() {
+        const resultsDiv = document.getElementById('results');
+        const messageDiv = document.getElementById('resultMessage');
+        
+        const accuracy = ((this.correctLines / this.totalLines) * 100).toFixed(1);
+        
+        messageDiv.innerHTML = `
+            正解数: ${this.correctLines} / ${this.totalLines}<br>
+            正解率: ${accuracy}%<br>
+            エラー数: ${this.errors}
+        `;
+        
+        resultsDiv.style.display = 'block';
+    }
 }
 
 // ページ読み込み後にゲーム初期化
