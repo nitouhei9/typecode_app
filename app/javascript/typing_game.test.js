@@ -324,3 +324,9 @@ describe('SimpleTypeCodeGame', () => {
     });
   });
 });
+
+
+// テスト環境用のエクスポート
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = SimpleTypeCodeGame;
+}
